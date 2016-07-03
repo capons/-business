@@ -72,7 +72,7 @@ class AuthController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
-    public function postLogin(Request $request) //login via email + pass or name + pass
+    public function postLogin(Request $request) //login via email + pass for client (administrator)
     {
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
@@ -100,14 +100,16 @@ class AuthController extends Controller
                 'email'     => Input::get('l_email'),  //email -> database row name
                 'password'  => Input::get('l_pass')//password -> database row name
             );
+            /*
             $userdata_name = array( //login via name
                 'name'    => Input::get('l_email'),
                 'password'  => Input::get('l_pass')
             );
+            */
             if (Auth::attempt(/*$credentials*/$userdata_email/* + ['active' => 1]*/, $request->has('remember'))) { //avtive need to be 1 to check if user active account
                 if(Auth::attempt($userdata_email + ['active' => 1])) { //check if user active account
-                    if(Auth::user()->access == 2) {
-                        Session::flash('user-info', 'Вы успешно вошли!'); //send message to user via flash data
+                   // if(Auth::user()->access == 2) {
+                        Session::flash('user-info', Lang::get('message.auth.access_login')); //send message to user via flash data
                         return redirect('client/account');
                         // if (Session::has('user_auth_mess')) { //if session isset redirect if no push data to session
                         //return $this->handleUserWasAuthenticated($request, $throttles);
@@ -115,13 +117,16 @@ class AuthController extends Controller
                         //Session::push('user_auth_mess', $data);  //$data is an array and user is a session key.
                         //   return $this->handleUserWasAuthenticated($request, $throttles);
                         //}
-                    } else {
-                        $this->login_err_m = 'У вас нет прав!';
-                    }
+                   // } else {
+                  //      $this->login_err_m = 'У вас нет прав!';
+                   // }
                 } else {
-                    $this->login_err_m = 'Аккаунт не активирован!';
+                    $this->login_err_m = Lang::get('error.auth.no_active');
                 }
-            } elseif (Auth::attempt(/*$credentials*/$userdata_name /*+ ['active' => 1]*/, $request->has('remember'))) {
+           // }
+            /*
+            elseif (Auth::attempt(/*$credentials*///$userdata_name /*+ ['active' => 1]*/, $request->has('remember'))) {
+            /*
                 if(Auth::attempt($userdata_name + ['active' => 1])) { //check if user active account
                     if(Auth::user()->access == 1) {
                         Session::flash('user-info', 'Вы успешно вошли!'); //send message to user via flash data
@@ -137,9 +142,11 @@ class AuthController extends Controller
                         return $this->handleUserWasAuthenticated($request, $throttles);
                     }
                     */
+            /*
                 } else {
                     $this->login_err_m = 'Аккаунт не активирован!';
                 }
+            */
             } else {
                 $this->login_err_m = Lang::get('error.login_pass_error');
             }
@@ -156,6 +163,16 @@ class AuthController extends Controller
             ->withErrors([
                 $this->loginUsername() => $this->login_err_m,//$this->getFailedLoginMessage(), //message active account error
             ]);
+    }
+    public function postLoginManager(Request $request){ //login by manager
+       if(!empty($request)){
+           return redirect('/'); //redirect if no request
+       } else {
+           echo 'ok111';         //manager login convert
+       }
+        //return redirect('/'); //redirect
+            // Display text here
+
     }
     /**
      * @param Request $request

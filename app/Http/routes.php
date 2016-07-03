@@ -13,17 +13,21 @@
 //default route
 Route::get('/','BusinessController@index');
 //registration route
-
 Route::get('auth/registration', 'Auth\AuthController@getRegister'); //view auth/register
 Route::post('auth/registration', 'Auth\AuthController@postRegister'); //receive data from registration form
 Route::get('auth/active', 'Auth\AuthController@postActivate'); //activate user account
 
 
 Route::get('auth/login', 'Auth\AuthController@getLogin');
-Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin'); //login for clients (administrator)
+Route::get('auth/loginmanager','Auth\AuthController@postLoginManager'); //login for clients
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
-Route::get('client/account','ClientController@index');
+Route::group(['middleware' => ['auth','admin']], function() { //group for admin
+    Route::get('client/account', 'ClientController@index');
+    Route::get('client/account/manager', 'ClientController@getManager');
 
-
-Route::get('manager/account','ManagerController@index');
+});
+Route::group(['middleware' => ['auth']], function() { //group for manager
+    Route::get('manager/account', 'ManagerController@index');
+});

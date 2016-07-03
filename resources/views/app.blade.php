@@ -43,7 +43,7 @@
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li <?php if(Route::getCurrentRoute()->getPath() == 'client/account'){ echo 'class=active';} else { echo '';} ?>><a href="{{ url('client/account')}}">Клиент аккаунт<span class="sr-only"></span></a></li>
+                    <li <?php if(Route::getCurrentRoute()->getPath() == 'client/account' || Route::getCurrentRoute()->getPath() == 'client/account/manager'){ echo 'class=active';} else { echo '';} ?>><a href="{{ url('client/account')}}">Клиент аккаунт<span class="sr-only"></span></a></li>
                     <li <?php if(Route::getCurrentRoute()->getPath() == 'manager/account'){ echo 'class=active';} else { echo '';} ?>><a href="{{ url('manager/account')}}">Менеджер аккаунт<span class="sr-only"></span></a></li>
                     <li <?php if(Route::getCurrentRoute()->getPath() == 'auth/logout'){ echo 'class=active';} else { echo '';} ?>><a href="{{ url('auth/logout')}}">Выйти<span class="sr-only"></span></a></li>
                 </ul>

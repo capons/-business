@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
@@ -14,11 +16,16 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() //default
     {
-       return view('client.index');
+
+        $user = User::where('id', Auth::user()->id)->first();
+        return view('client.index',['user' => $user]);
     }
 
+    public function getManager(){ //
+        return view('client.manager');
+    }
     /**
      * Show the form for creating a new resource.
      *
