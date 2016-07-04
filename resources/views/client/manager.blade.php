@@ -65,11 +65,10 @@
                                     </p>
                                 </td>
                                 <td>
-
-                                    <form id="m_delete" action="<?php echo Config::get('app.url'); ?>/client/account/manager/{{$val->id }}" method="POST"> <!-- send post id to url and delete data -->
+                                    <form id="m_delete_{{$val->id}}" action="<?php echo Config::get('app.url'); ?>/client/account/manager/{{$val->id }}" method="POST"> <!-- send post id to url and delete data -->
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }} <!--the same <input type="hidden" name="_method" value="DELETE"> -->
-                                        <button type="submit" class="btn btn-danger">
+                                        <button  data-manager_id="{{$val->id}}" type="button" class="btn btn-danger b_get_m_id">
                                             <i class="fa fa-btn fa-trash"></i>Delete
                                         </button>
                                     </form>

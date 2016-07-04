@@ -49,14 +49,14 @@ var client = (function () {                    //Client controller group
                                     $('#append_manager_error > h2').html('');
                                     $('#f-add-m').removeAttr('disabled');
                                     window.location.href = "./manager";
-                                },4000);
+                                },2000);
                                 break;
                             case false:        //if basket goods quantity response true go to next step
                                 $('#append_manager_error > h2').html(data.message.name);
                                 $('#f-add-m').removeAttr('disabled');
                                 setTimeout(function(){
                                     $('#append_manager_error > h2').html('');
-                                },4000);
+                                },2000);
                                 break;
                         }
                     },
@@ -68,15 +68,17 @@ var client = (function () {                    //Client controller group
                 });
             });
         },
-        meneger_delete: function(){
-            $('#m_delete').on('submit', function(e){
-                e.preventDefault();
-                
-                var r = confirm("Удалить?");
-                if (r == true) {
-                    this.submit();
-                }
+        meneger_delete: function(){ //delete manager confirm
+            $('.b_get_m_id').click(function(){
+                var manager_id = $(this).data("manager_id");
+                $('#m_delete_'+manager_id).on('click', function(){
+                    var r = confirm("Удалить?");
+                    if (r == true) {
+                        this.submit();
+                    }
+                });
             });
+
         }
     };
     return new doConstruct;
