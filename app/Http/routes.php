@@ -24,8 +24,13 @@ Route::get('auth/loginmanager','Auth\AuthController@postLoginManager'); //login 
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 Route::group(['middleware' => ['auth','admin']], function() { //group for admin
-    Route::get('client/account', 'ClientController@index');
-    Route::get('client/account/manager', 'ClientController@getManager');
+    Route::get('client/account', 'Client\ClientController@index');
+    Route::get('client/account/manager', 'Client\ClientManagerController@index'); //config manager list
+    Route::post('client/account/manager', 'Client\ClientManagerController@create'); //create new manager
+    Route::delete('client/account/manager/{id}','Client\ClientManagerController@destroy'); //delete old manager from list
+
+    Route::get('client/account/script', 'Client\ClientScriptController@index'); //config manager list
+
 
 });
 Route::group(['middleware' => ['auth']], function() { //group for manager

@@ -11,10 +11,9 @@
     <link href="{!! asset('public/css/style.css') !!}" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
-
     <!--style js -->
     <script type="text/javascript" src="{!! asset('/public/js/main.js') !!}"></script>
+
 </head>
 <body>
 <!--nav menu -->
@@ -43,7 +42,7 @@
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li <?php if(Route::getCurrentRoute()->getPath() == 'client/account' || Route::getCurrentRoute()->getPath() == 'client/account/manager'){ echo 'class=active';} else { echo '';} ?>><a href="{{ url('client/account')}}">Клиент аккаунт<span class="sr-only"></span></a></li>
+                    <li <?php if(Route::getCurrentRoute()->getPath() == 'client/account' || Route::getCurrentRoute()->getPath() == 'client/account/manager' || Route::getCurrentRoute()->getPath() == 'client/account/script'){ echo 'class=active';} else { echo '';} ?>><a href="{{ url('client/account')}}">Клиент аккаунт<span class="sr-only"></span></a></li>
                     <li <?php if(Route::getCurrentRoute()->getPath() == 'manager/account'){ echo 'class=active';} else { echo '';} ?>><a href="{{ url('manager/account')}}">Менеджер аккаунт<span class="sr-only"></span></a></li>
                     <li <?php if(Route::getCurrentRoute()->getPath() == 'auth/logout'){ echo 'class=active';} else { echo '';} ?>><a href="{{ url('auth/logout')}}">Выйти<span class="sr-only"></span></a></li>
                 </ul>

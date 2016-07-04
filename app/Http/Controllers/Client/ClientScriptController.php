@@ -1,31 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\client;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\User;
-use Illuminate\Support\Facades\Auth;
 
-class ClientController extends Controller
+class ClientScriptController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() //default
+    public function index()
     {
-
-        $user = User::where('id', Auth::user()->id)->first();
-        return view('client.index',['user' => $user]);
+        return view('client.script');
     }
 
-    public function getManager(){ //
-        return view('client.manager');
-    }
     /**
      * Show the form for creating a new resource.
      *

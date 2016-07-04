@@ -18,7 +18,7 @@ class Manager extends Migration
             $table->increments('id',12);
             $table->integer('users_id')->unsigned();
             $table->string('name',128);
-            $table->string('email',60)->unique();
+            $table->string('login',60)->unique();
             $table->string('password', 60);
             $table->rememberToken();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
