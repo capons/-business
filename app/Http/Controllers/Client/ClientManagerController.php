@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
-use App\model\DB\Manager;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -32,7 +31,6 @@ class ClientManagerController extends Controller
     {
         $messages = [ //validation message
             'name.required' => 'Введите имя!',
-
         ];
         return Validator::make($data, [   //validation registration form
             'name' => 'required|min:6|max:50',
@@ -48,7 +46,7 @@ class ClientManagerController extends Controller
     public function index() //default
     {
         $user = User::where('id', Auth::user()->id)->first();
-        $all_manager = Manager::where('users_id',Auth::user()->id)->get(); //display all client manager
+        $all_manager = User::where('parent_id',Auth::user()->id)->get(); //display all client manager
         return view('client.manager',['user' => $user,'manager' => $all_manager]);
     }
 
@@ -129,8 +127,8 @@ class ClientManagerController extends Controller
      */
     public function destroy($id)
     {
-        $manager = Manager::where('id',$id)->first();
-        $delete_manager = Manager::where('id', $id)->delete();
+        $manager = User::where('id',$id)->first();
+        $delete_manager = User::where('id', $id)->delete();
         Session::flash('user-info', Lang::get('message.client.positiv_delete_m'));
         //send mail
         $headers  = 'MIME-Version: 1.0' . "\r\n";
@@ -146,23 +144,20 @@ class ClientManagerController extends Controller
         $this->hash = bcrypt($data['name']); //put user account activate hash into variable
         $this->pass_generator = str_random(8); //generate password
         $this->generateLogin(); //generate login manager login name
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;'); //foreign_key check off
-        $save_data = Manager::create([
-            'users_id' => Auth::user()->id,
+        $save_data = User::create([
             'name' => $data['name'],
-            'login' => $this->login_generator,
-            'password' => $string = $this->pass_generator,
+            'login' => $this->login_generator, //email column for manager login
+            'password' => bcrypt($this->pass_generator),
             'active' => 1, //set user to active (need to be confirm on email address in future)
             'access' => 1,
-            'hash' => $this->hash
+            'hash' => $this->hash,
+            'parent_id' => Auth::user()->id,
         ]);
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;'); //foreign_key check on
-        //$this->last_id = $save_data->id;    //put user id into variable
         return $save_data;
     }
-    protected function generateLogin(){
+    protected function generateLogin(){ //generate manager login name
         $this->login_generator = str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT); //substr($this->login_generator, 2);
-        $login_name =  Manager::where('login', $this->login_generator)->first();
+        $login_name =  User::where('login', $this->login_generator)->first();  //email column for manager login
         if(count($login_name) > 0){ //if login name isset -> generate new login name
             $this->generateLogin();
         }

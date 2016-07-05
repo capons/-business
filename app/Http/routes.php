@@ -20,17 +20,17 @@ Route::get('auth/active', 'Auth\AuthController@postActivate'); //activate user a
 
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin'); //login for clients (administrator)
-Route::get('auth/loginmanager','Auth\AuthController@postLoginManager'); //login for clients
+Route::post('auth/loginmanager','Auth\AuthController@postLoginManager'); //login for clients
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
-Route::group(['middleware' => ['auth','admin']], function() { //group for admin
+Route::group(['middleware' => ['admin']], function() { //group for admin
     Route::get('client/account', 'Client\ClientController@index');
     Route::get('client/account/manager', 'Client\ClientManagerController@index'); //config manager list
     Route::post('client/account/manager', 'Client\ClientManagerController@create'); //create new manager
     Route::delete('client/account/manager/{id}','Client\ClientManagerController@destroy'); //delete old manager from list
 
-    Route::get('client/account/script', 'Client\ClientScriptController@index'); //config manager list
-
+    Route::get('client/account/script', 'Client\ClientScriptController@index'); //config script list
+    Route::post('client/account/script', 'Client\ClientScriptController@store'); //add new script
 
 });
 Route::group(['middleware' => ['auth']], function() { //group for manager

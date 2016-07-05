@@ -141,6 +141,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Zofe\Rapyd\RapydServiceProvider::class, //add gridview library
+        Baum\Providers\BaumServiceProvider::class, //add category tree library
 
         /*
          * Application Service Providers...

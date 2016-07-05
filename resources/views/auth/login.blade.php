@@ -32,23 +32,19 @@
             </div>
         </div>
         <!--Login form for manager -->
+        <!--
         <div class="col-xs-6">
             <div style="margin: 0 auto;float: none" class="col-xs-6">
                 <p style="text-align: center">Форма входа менеджера </p>
                 <form class="form-horizontal" action="{{action('Auth\AuthController@postLoginManager')}}" method="post">
                     <div class="form-group">
                         <label >Логин:</label>
-                        <input type="text" class="form-control" name="l_email" required placeholder="Введите логин">
+                        <input type="text" class="form-control" name="m_login" required placeholder="Введите логин">
                     </div>
                     <div class="form-group">
                         <label >Пароль:</label>
-                        <input type="password" class="form-control" name="l_pass"  required placeholder="Введите пароль">
+                        <input type="password" class="form-control" name="m_pass" required  placeholder="Введите пароль">
                     </div>
-                    <!--
-                    <div>
-                        <input type="checkbox" name="remember"> Запомнить
-                    </div>
-                    -->
                     <div class="form-group">
                         <input style="background-color: inherit;border: 1px solid gainsboro;padding: 8px;width: 120px"  type="submit" value="Войти">
                     </div>
@@ -56,6 +52,7 @@
                 </form>
             </div>
         </div>
+        -->
     </div>
 
 

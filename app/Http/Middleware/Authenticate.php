@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Auth;
 
 class Authenticate
 {
@@ -46,6 +47,13 @@ class Authenticate
             }
         }
 
-        return $next($request);
+        //return $next($request);
+        if ( Auth::check() && Auth::user()->access == 1 ) //check if login and have admin rights
+        {
+            return $next($request);
+        }
+        Session::flash('user-info', Lang::get('error.auth.no_access'));  //if user do not login
+        return redirect()->guest('auth/login');
+
     }
 }

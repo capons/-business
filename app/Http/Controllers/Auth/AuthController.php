@@ -84,7 +84,7 @@ class AuthController extends Controller
         //$credentials = $this->getCredentials($request);
         $messages = [ //validation message
             'l_email.required' => 'Введите имя!',
-            'l_password.required' => 'Введите пароль!'
+            'l_pass.required' => 'Введите пароль!'
         ];
         //$validator = Validator::make(Input::all(), $rules,$messages);
         $validator = Validator::make($request->all(), [
@@ -96,19 +96,19 @@ class AuthController extends Controller
                 ->withInput()
                 ->withErrors($validator); //set validation error name to display in error layout  views/common/errors.blade.php
         } else {
-            $userdata_email = array( //login via email
+            $userdata_email = array( //login via email by client
                 'email'     => Input::get('l_email'),  //email -> database row name
                 'password'  => Input::get('l_pass')//password -> database row name
             );
-            /*
-            $userdata_name = array( //login via name
-                'name'    => Input::get('l_email'),
+            
+            $userdata_name = array( //login via name by manager
+                'login'    => Input::get('l_email'),
                 'password'  => Input::get('l_pass')
             );
-            */
+
             if (Auth::attempt(/*$credentials*/$userdata_email/* + ['active' => 1]*/, $request->has('remember'))) { //avtive need to be 1 to check if user active account
                 if(Auth::attempt($userdata_email + ['active' => 1])) { //check if user active account
-                   // if(Auth::user()->access == 2) {
+                    if(Auth::user()->access == 2) {
                         Session::flash('user-info', Lang::get('message.auth.access_login')); //send message to user via flash data
                         return redirect('client/account');
                         // if (Session::has('user_auth_mess')) { //if session isset redirect if no push data to session
@@ -117,16 +117,14 @@ class AuthController extends Controller
                         //Session::push('user_auth_mess', $data);  //$data is an array and user is a session key.
                         //   return $this->handleUserWasAuthenticated($request, $throttles);
                         //}
-                   // } else {
-                  //      $this->login_err_m = 'У вас нет прав!';
-                   // }
+                    } else {
+                        $this->login_err_m = 'У вас нет прав!';
+                    }
                 } else {
                     $this->login_err_m = Lang::get('error.auth.no_active');
                 }
-           // }
-            /*
-            elseif (Auth::attempt(/*$credentials*///$userdata_name /*+ ['active' => 1]*/, $request->has('remember'))) {
-            /*
+            } elseif (Auth::attempt(/*$credentials*/$userdata_name /*+ ['active' => 1]*/, $request->has('remember'))) {
+
                 if(Auth::attempt($userdata_name + ['active' => 1])) { //check if user active account
                     if(Auth::user()->access == 1) {
                         Session::flash('user-info', 'Вы успешно вошли!'); //send message to user via flash data
@@ -142,11 +140,10 @@ class AuthController extends Controller
                         return $this->handleUserWasAuthenticated($request, $throttles);
                     }
                     */
-            /*
                 } else {
                     $this->login_err_m = 'Аккаунт не активирован!';
                 }
-            */
+            
             } else {
                 $this->login_err_m = Lang::get('error.login_pass_error');
             }
@@ -164,14 +161,80 @@ class AuthController extends Controller
                 $this->loginUsername() => $this->login_err_m,//$this->getFailedLoginMessage(), //message active account error
             ]);
     }
-    public function postLoginManager(Request $request){ //login by manager
-       if(!empty($request)){
-           return redirect('/'); //redirect if no request
-       } else {
-           echo 'ok111';         //manager login convert
-       }
-        //return redirect('/'); //redirect
-            // Display text here
+    public function postLoginManager(Request $request){ //login by manager (if need to do another login page for manager)
+        if ($request->isMethod('post')) {
+            // If the class is using the ThrottlesLogins trait, we can automatically throttle
+            // the login attempts for this application. We'll key this by the username and
+            // the IP address of the client making these requests into this application.
+            $throttles = $this->isUsingThrottlesLoginsTrait();
+            if ($throttles && $this->hasTooManyLoginAttempts($request)) {
+                return $this->sendLockoutResponse($request);
+            }
+            //$credentials = $this->getCredentials($request);
+            $messages = [ //validation message
+                'm_login.required' => 'Введите логин!',
+                'm_pass.required' => 'Введите пароль!'
+            ];
+            //$validator = Validator::make(Input::all(), $rules,$messages);
+            $validator = Validator::make($request->all(), [
+                'm_login' => 'required',
+                'm_pass' => 'required'
+            ], $messages);
+            if ($validator->fails()) { //if true display error
+                return redirect('auth/login')
+                    ->withInput()
+                    ->withErrors($validator); //set validation error name to display in error layout  views/common/errors.blade.php
+            } else {
+                $userdata_email = array( //login via email
+                    'email'     => Input::get('m_login'),  //email -> database row name
+                    'password'  => Input::get('m_pass')//password -> database row name
+                );
+
+                $userdata_name = array( //login via name
+                    'name'    => Input::get('l_email'),
+                    'password'  => Input::get('l_pass')
+                );
+
+                //print_r($userdata_email);
+                //die();
+                if (Auth::attempt(/*$credentials*/$userdata_email/* + ['active' => 1]*//*, $request->has('remember')*/)) { //avtive need to be 1 to check if user active account
+                    if(Auth::attempt($userdata_email + ['active' => 1])) { //check if user active account
+                       // echo Auth::user()-> access;
+                       // die();
+                        if(Auth::user()->access == 1) {
+                            Session::flash('user-info', Lang::get('message.auth.access_login')); //send message to user via flash data
+                            return redirect('client/account');
+                        // if (Session::has('user_auth_mess')) { //if session isset redirect if no push data to session
+                        //return $this->handleUserWasAuthenticated($request, $throttles);
+                        //} else {
+                        //Session::push('user_auth_mess', $data);  //$data is an array and user is a session key.
+                        //   return $this->handleUserWasAuthenticated($request, $throttles);
+                        //}
+                         } else {
+                              $this->login_err_m = 'У вас нет прав!';
+                         }
+                    } else {
+                        $this->login_err_m = Lang::get('error.auth.no_active');
+                    }
+                } else {
+                    $this->login_err_m = Lang::get('error.login_pass_error');
+                }
+            }
+            // If the login attempt was unsuccessful we will increment the number of attempts
+            // to login and redirect the user back to the login form. Of course, when this
+            // user surpasses their maximum number of attempts they will get locked out.
+            if ($throttles) {
+                $this->incrementLoginAttempts($request);
+            }
+            //return redirect($this->loginPath())
+            return redirect('auth/login') //redirect to with message
+            ->withInput($request->only($this->loginUsername(), 'remember'))
+                ->withErrors([
+                    $this->loginUsername() => $this->login_err_m,//$this->getFailedLoginMessage(), //message active account error
+                ]);
+        } else {
+            return redirect('/');
+        }
 
     }
     /**
