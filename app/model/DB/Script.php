@@ -13,5 +13,5 @@ class Script extends Model {
 
 
     // guard attributes from mass-assignment
-    protected $fillable = array('parent_id','name','desc');
+    protected $fillable = array('parent_id','users_id','name','desc');
 }

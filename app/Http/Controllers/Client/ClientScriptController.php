@@ -40,7 +40,8 @@ class ClientScriptController extends Controller
     public function index()
     {
         $user = User::where('id', Auth::user()->id)->first();
-        $block_category = Script::all()->toArray();
+        //$block_category = Script::all()->toArray();
+        $block_category = Script::where('users_id', Auth::user()->id)->get()->toArray();;
         //builde category tree
 
         $cat = array();
@@ -56,7 +57,7 @@ class ClientScriptController extends Controller
         return view('client.script',['user' => $user,'block_category' => $block_category,'block_tree' => $block_category_tree]);
     }
     public function build_tree($cat, $parent_id, $only_parent = false){
-            $tree = '<div>';
+            $tree = '<div style="width: 50%;margin: 0 auto">';
             if (is_array($cat) and isset($cat[$parent_id])) {
                 $tree .= '<ul type="circle" id="category-tree">';
                 if ($only_parent == false) {
@@ -111,10 +112,10 @@ class ClientScriptController extends Controller
      */
     protected function add(array $data){ //method to save registration user data to database
         if(empty($data['parent_id'])){
-            $new_block = Script::create(['name' => $data['name'],'desc' => $data['desc']]);
+            $new_block = Script::create(['users_id' => Auth::user()->id,'name' => $data['name'],'desc' => $data['desc']]);
             return $new_block;
         } else {
-            $new_block = Script::create(['parent_id' => $data['parent_id'],'name' => $data['name'],'desc' => $data['desc']]);
+            $new_block = Script::create(['parent_id' => $data['parent_id'],'users_id' => Auth::user()->id,'name' => $data['name'],'desc' => $data['desc']]);
             return $new_block;
         }
     }
