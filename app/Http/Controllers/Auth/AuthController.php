@@ -250,13 +250,11 @@ class AuthController extends Controller
                 $request, $validator
             );
         }
-        Auth::login($this->create($request->all()));
+       // Auth::login($this->create($request->all())); //registration and authorization in web application
+        $this->create($request->all());
         //$this->last_id -> return last database insert id
         $user = User::findOrFail($this->last_id); //user object
-
         $link_to_active = Config::get('app.url').'auth/active'.'?hash='.$this->hash.'&id='.$this->last_id; //send variable to mail view
-
-
         // To send HTML mail, the Content-type header must be set
         $headers  = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=utf8' . "\r\n";
@@ -292,12 +290,14 @@ class AuthController extends Controller
     /**
      * @return mixed
      */
+    /*
     public function getLogout() //logout user
     {
         Auth::logout(); //destroy Auth class data
         Session::flush(); //destroy session
         return redirect('/');
     }
+    */
     /**
      * Create a new user instance after a valid registration.
      *

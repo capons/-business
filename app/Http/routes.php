@@ -31,8 +31,10 @@ Route::group(['middleware' => ['admin']], function() { //group for admin
 
     Route::get('client/account/script', 'Client\ClientScriptController@index'); //config script list
     Route::post('client/account/script', 'Client\ClientScriptController@store'); //add new script
+    Route::get('client/account/script/{id}', 'Client\ClientScriptController@show'); //add show script to edit
+
 
 });
 Route::group(['middleware' => ['auth']], function() { //group for manager
-    Route::get('manager/account', 'ManagerController@index');
+    Route::get('manager/account', 'Manager\ManagerController@index');
 });

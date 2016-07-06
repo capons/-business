@@ -8,7 +8,6 @@
 @section('content')
     <p style="text-align: center">Main page</p>
 
-
     <div class="col-xs-12">
         <div style="float: none;margin: 0 auto" class="col-xs-6">
             <!-- Display Validation Errors -->

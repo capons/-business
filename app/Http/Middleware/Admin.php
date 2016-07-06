@@ -33,6 +33,16 @@ class Admin {
     public function handle($request, Closure $next)
     {
 
+        if ($this->auth->guest()) {
+            if ($request->ajax()) {
+                return response('Unauthorized.', 401);
+            } else {
+                Session::flash('user-info', Lang::get('error.auth.need_auth'));  //if user do not login
+
+                return redirect()->guest('auth/login');
+            }
+        }
+
         if ( Auth::check() && Auth::user()->access == 2 ) //check if login and have admin rights
         {
             return $next($request);

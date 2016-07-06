@@ -14,6 +14,7 @@ use Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Config;
 
 class ClientScriptController extends Controller
 {
@@ -62,7 +63,11 @@ class ClientScriptController extends Controller
                 $tree .= '<ul type="circle" id="category-tree">';
                 if ($only_parent == false) {
                     foreach ($cat[$parent_id] as $cat_row) {
-                        $tree .= '<li id="' . $cat_row['id'] . '">'.$cat_row['name'].' |'.$cat_row['desc'];  //li -> will have a id as category id in database
+                        if(mb_strlen($cat_row['desc']) > 15) {
+                            $tree .= '<li id="' . $cat_row['id'] . '"><div style="height:100px;">' . $cat_row['name'] . ' <div>' . mb_substr($cat_row['desc'], 0, 15) . '...' . '</div><div><a href="'.Config::get('app.url').'client/account/script/'.$cat_row['id'].'">редиктировать</a></div></div>';  //li -> will have a id as category id in database
+                        } else {
+                            $tree .= '<li id="' . $cat_row['id'] . '"><div style="height:100px;">' . $cat_row['name'] . ' <div>'.$cat_row['desc'].'</div></div>';  //li -> will have a id as category id in database
+                        }
                         $tree .= $this->build_tree($cat, $cat_row['id']);
                         $tree .= '</li>';
                     }
@@ -128,7 +133,9 @@ class ClientScriptController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::where('id', Auth::user()->id)->first();
+        $script = Script::where('id',$id)->first();
+        return view('client.script_view', ['script' => $script,'user'=>$user]);
     }
 
     /**
