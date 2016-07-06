@@ -29,8 +29,8 @@ class ClientScriptController extends Controller
             'desc.required' => 'Введите описание',
         ];
         return Validator::make($data, [   //validation registration form
-            'name' => 'required|min:6|max:50',
-            'desc' => 'required|min:6|max:255',
+            'name' => 'required|min:3|max:50',
+            'desc' => 'required|min:3|max:255',
         ],$messages);
     }
     /**
@@ -55,19 +55,19 @@ class ClientScriptController extends Controller
        
         $block_category_tree =  $this->build_tree($cat, 0); //SEND category tree to view
 
-        return view('client.script',['user' => $user,'block_category' => $block_category,'block_tree' => $block_category_tree]);
+        return view('client.script',['user' => $user,'block_tree' => $block_category_tree]);
     }
     public function build_tree($cat, $parent_id, $only_parent = false){
-            $tree = '<div style="width: 50%;margin: 0 auto">';
+            $tree = '<div class="child">';
             if (is_array($cat) and isset($cat[$parent_id])) {
-                $tree .= '<ul type="circle" id="category-tree">';
+                $tree .= '<ul style="list-style: none" class="dropdown">';
                 if ($only_parent == false) {
                     foreach ($cat[$parent_id] as $cat_row) {
-                        if(mb_strlen($cat_row['desc']) > 15) {
-                            $tree .= '<li id="' . $cat_row['id'] . '"><div style="height:100px;">' . $cat_row['name'] . ' <div>' . mb_substr($cat_row['desc'], 0, 15) . '...' . '</div><div><a href="'.Config::get('app.url').'client/account/script/'.$cat_row['id'].'">редиктировать</a></div></div>';  //li -> will have a id as category id in database
-                        } else {
-                            $tree .= '<li id="' . $cat_row['id'] . '"><div style="height:100px;">' . $cat_row['name'] . ' <div>'.$cat_row['desc'].'</div></div>';  //li -> will have a id as category id in database
-                        }
+                      //  if(mb_strlen($cat_row['desc']) > 15) {
+                            $tree .= '<li id="' . $cat_row['id'] . '"><div  class="col-xs-12 block_body"><div class="col-xs-12 block_title">' . $cat_row['name'] . '</div> <div class="col-xs-12 block_desc">' . mb_substr($cat_row['desc'], 0, 15) . '...' . '</div><div><span class="b_edit-'.$cat_row['id'].'"  data-name='.$cat_row['name'].' data-desc='.$cat_row['desc'].' onclick="edit_script('.$cat_row['id'].')">редиктировать</span><span onclick="add_script('.$cat_row['id'].')">Add</span><span onclick="show_script('.$cat_row['id'].')">show</span></div></div>';  //li -> will have a id as category id in database
+                      //  } else {
+                        //    $tree .= '<li onclick="test('.$cat_row['id'].')" id="' . $cat_row['id'] . '"><div class="col-xs-12" style="height:100px;background-color: #b4b9c0;">' . $cat_row['name'] . ' <div>'.$cat_row['desc'].'</div><div><a href="'.Config::get('app.url').'client/account/script/'.$cat_row['id'].'">редиктировать</a></div></div>';  //li -> will have a id as category id in database
+                     //   }
                         $tree .= $this->build_tree($cat, $cat_row['id']);
                         $tree .= '</li>';
                     }
@@ -144,9 +144,9 @@ class ClientScriptController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request) //edit script block
     {
-        //
+        echo 'ОБНОВИТЬ В БАЗЕ';
     }
 
     /**

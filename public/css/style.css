@@ -1,0 +1,24 @@
+/* client account*/
+ul.dropdown li .child{
+    display: none;
+}
+.block_title {
+    background-color: white;
+    margin-bottom: 15px;
+}
+.block_desc {
+    background-color: white;
+}
+.block_body {
+    background-color: #b4b9c0;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+/*
+ul:hover ul.dropdown li .child{
+    display: block;
+}
+ul.dropdown li{
+    display: block;
+}
+/* ./client account*/

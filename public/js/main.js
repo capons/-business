@@ -27,6 +27,7 @@ var client = (function () {                    //Client controller group
         main.add_init_callback(this.meneger_delete); //delete manager
         main.add_init_callback(this.display_box_add_scipt); //add client script
         main.add_init_callback(this.ajax_add_script); //add client script
+
     };
     doConstruct.prototype = {
         show_add_manager_box: function () { //show modal to add new manager
@@ -93,7 +94,7 @@ var client = (function () {                    //Client controller group
                 $.ajax({
                     url: './script',
                     type: "post",
-                    data: {'name':$('input[name=block_name]').val(),'desc':$('textarea[name=block_desc]').val(),'parent_id':$('select[name=parent_id]').val(), '_token': $('input[name=_token]').val()},
+                    data: {'name':$('input[name=block_name]').val(),'desc':$('textarea[name=block_desc]').val(),'parent_id':$('input[name=parent_id]').val(), '_token': $('input[name=_token]').val()},
                     success: function(data){
                         switch (data.success){       //needed array cell
                             case true:            //if basket goods quontity response false
@@ -124,8 +125,31 @@ var client = (function () {                    //Client controller group
                 });
             });
         },
+
     };
     return new doConstruct;
 })();
+function show_script(id){
+    //console.log($('#'+id+">.child"));
+    var selector = $('#'+id+">.child");
+    if(selector.css('display') == 'block'){
+        selector.css('display','none');
+    } else {
+        selector.css('display','block');
+    }
+}
+function add_script (id){
+   /// console.log('test');
+    //$('#add-script-b').click(function(){
+    $('input[name=parent_id]').val(id);
+    $('#add-script-m').modal('show');
+   // });
+}
+function edit_script(id){
+    $('input[name=edit_parent_id]').val(id);
+    $('input[name=edit_block_name]').val($('.b_edit-'+id).attr("data-name"));
+    $('textarea[name=edit_block_desc]').val($('.b_edit-'+id).attr("data-desc"));
+    $('#edit-script-m').modal('show');
+}
 
 
