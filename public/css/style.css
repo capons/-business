@@ -14,11 +14,15 @@ ul.dropdown li .child{
     padding: 15px;
     margin-bottom: 15px;
 }
-/*
-ul:hover ul.dropdown li .child{
-    display: block;
-}
-ul.dropdown li{
-    display: block;
+.b-s-b {
+    padding: 10px;
+    cursor: pointer;
 }
 /* ./client account*/
+
+/* manager account*/
+.manager_home {
+    float: right;
+    padding: 10px;
+}
+/* ./manager account*/

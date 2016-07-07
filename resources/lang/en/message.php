@@ -8,7 +8,8 @@ return [
     'client' => [
         'positiv_add_new_manager' => 'Вы успешно добавили менеджера!',
         'positiv_delete_m' => 'Менеджер успешно удален!',
-        'positiv_add_script' => 'Блок добавлен удачно'
+        'positiv_add_script' => 'Блок добавлен удачно!',
+        'positive_edit' => 'Блок успешно отредактирован!'
     ]
 
 ];

@@ -27,7 +27,7 @@ var client = (function () {                    //Client controller group
         main.add_init_callback(this.meneger_delete); //delete manager
         main.add_init_callback(this.display_box_add_scipt); //add client script
         main.add_init_callback(this.ajax_add_script); //add client script
-
+        main.add_init_callback(this.ajax_edit_script); //edit script
     };
     doConstruct.prototype = {
         show_add_manager_box: function () { //show modal to add new manager
@@ -85,7 +85,8 @@ var client = (function () {                    //Client controller group
         },
         display_box_add_scipt: function(){
             $('#add-script-b').click(function(){
-                $('#add-script-m').modal('show');
+                console.log('test');
+                $('#add-script-mm').modal('show');
             });
         },
         ajax_add_script: function () { //show modal to add new manager
@@ -107,12 +108,15 @@ var client = (function () {                    //Client controller group
                                     window.location.href = "./script";
                                 },2000);
                                 break;
-                            case false:        //if basket goods quantity response true go to next step
+                            case false:        //if return form validation error
                                 //console.log(data.message);
-                                $('#append_manager_error > h2').html(data.message.name);
-                                $('#f-add-script').removeAttr('disabled');
+                                $.each( data.message, function( key, value ) {
+                                    $('#append_manager_error > h2').append(value+'<br>');
+                                });
+                                //$('#append_manager_error > h2').html(data.message.name);
                                 setTimeout(function(){
                                     $('#append_manager_error > h2').html('');
+                                    $('#f-add-script').removeAttr('disabled');
                                 },2000);
                                 break;
                         }
@@ -125,12 +129,55 @@ var client = (function () {                    //Client controller group
                 });
             });
         },
-
+        ajax_edit_script:function(){
+            $('#f-edit-script').click(function() {
+                $("#f-edit-script").attr('disabled', 'disabled');
+                $.ajax({
+                    url: './script/edit',
+                    type: "post",
+                    data: {
+                        'e_name': $('input[name=edit_block_name]').val(),
+                        'e_desc': $('textarea[name=edit_block_desc]').val(),
+                        'edit_id': $('input[name=edit_parent_id]').val(),
+                        '_token': $('input[name=_token]').val()
+                    },
+                    success: function (data) {
+                        switch (data.success) {       //needed array cell
+                            case true:            //if basket goods quontity response false
+                                //console.log(data.message);
+                                $('#append_manager_edit_error > h2').html(data.message);
+                                setTimeout(function () {
+                                    $('#add-manager-m').modal('hide');
+                                    $('#f-edit-script').removeAttr('disabled');
+                                    window.location.href = "./script";
+                                }, 2000);
+                                //$('#append_manager_edit_error > h2').html('');
+                                break;
+                            case false:        //if basket goods quantity response true go to next step
+                                $.each( data.message, function( key, value ) {
+                                    $('#append_manager_edit_error > h2').append(value+'<br>');
+                                });
+                                //$('#append_manager_edit_error > h2').html(data.message.name);
+                                setTimeout(function () {
+                                    $('#append_manager_edit_error > h2').html('');
+                                    $('#f-edit-script').removeAttr('disabled');
+                                }, 2000);
+                                break;
+                        }
+                    },
+                    error: function (data) {
+                        var errors = data.responseJSON;
+                        console.log(errors);
+                        // Render the errors with js ...
+                    }
+                });
+            });
+        }
     };
     return new doConstruct;
 })();
+//client route group function
 function show_script(id){
-    //console.log($('#'+id+">.child"));
     var selector = $('#'+id+">.child");
     if(selector.css('display') == 'block'){
         selector.css('display','none');
@@ -138,18 +185,41 @@ function show_script(id){
         selector.css('display','block');
     }
 }
-function add_script (id){
-   /// console.log('test');
-    //$('#add-script-b').click(function(){
+function add_script (id){   //add child block
     $('input[name=parent_id]').val(id);
-    $('#add-script-m').modal('show');
-   // });
+    $('#add-script-mm').modal('show');
 }
-function edit_script(id){
+function edit_script(id){ //add val to input form -> to edit block data
     $('input[name=edit_parent_id]').val(id);
-    $('input[name=edit_block_name]').val($('.b_edit-'+id).attr("data-name"));
-    $('textarea[name=edit_block_desc]').val($('.b_edit-'+id).attr("data-desc"));
+    $('input[name=edit_block_name]').val($('#b_edit-'+id).attr("data-name"));
+    $('textarea[name=edit_block_desc]').val($('#b_edit-'+id).attr("data-desc"));
     $('#edit-script-m').modal('show');
 }
+// ./client route group function
+
+//Manager route group function
+var manager = (function () {
+    var doConstruct = function () {
+
+    };
+    doConstruct.prototype = {
+
+    };
+    return new doConstruct;
+})();
+function show_script_m(id){
+    var block_desc = $('#m-desc-res-'+id).attr("data-m_desc"); //block description
+
+    $('#display-manager-task-desk').html(block_desc);         //add block description
+    var selector = $('#'+id+">.child");
+    if(selector.css('display') == 'block'){                  //show and hide child block
+        selector.css('display','none');
+    } else {
+        selector.css('display','block');
+    }
+}
+
+// ./Manager route group
+
 
 

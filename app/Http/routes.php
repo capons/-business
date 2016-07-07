@@ -23,6 +23,7 @@ Route::post('auth/login', 'Auth\AuthController@postLogin'); //login for clients 
 Route::post('auth/loginmanager','Auth\AuthController@postLoginManager'); //login for clients
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
+//client route group
 Route::group(['middleware' => ['admin']], function() { //group for admin
     Route::get('client/account', 'Client\ClientController@index');
     Route::get('client/account/manager', 'Client\ClientManagerController@index'); //config manager list
@@ -36,6 +37,7 @@ Route::group(['middleware' => ['admin']], function() { //group for admin
 
 
 });
+//manager route group
 Route::group(['middleware' => ['auth']], function() { //group for manager
-    Route::get('manager/account', 'Manager\ManagerController@index');
+    Route::get('manager/account', 'Manager\ManagerController@index'); // manager default view
 });

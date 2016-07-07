@@ -9,11 +9,11 @@
     <div class="col-xs-12">
         <div class="col-xs-6">
             <div style="margin: 0 auto;float: none" class="col-xs-6">
-                <p style="text-align: center">Форма входа руководителя</p>
+                <p style="text-align: center">Форма входа руководителя или менеджера</p>
                 <form class="form-horizontal" action="{{action('Auth\AuthController@postLogin')}}" method="post">
                     <div class="form-group">
-                        <label >Email:</label>
-                        <input type="text" class="form-control" name="l_email" required placeholder="Введите адрес электронной почты">
+                        <label >Email или логин:</label>
+                        <input type="text" class="form-control" name="l_email" required placeholder="Введите email или логин">
                     </div>
                     <div class="form-group">
                         <label >Пароль:</label>

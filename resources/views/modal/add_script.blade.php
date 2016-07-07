@@ -1,4 +1,4 @@
-<div class="modal fade" id="add-script-m" tabindex="-1" role="dialog">
+<div class="modal fade" id="add-script-mm" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -46,23 +46,23 @@
             <div class="modal-body">
                 <form class="form-horizontal" action="{{url('client/account/script/edit')}}" method="post">
                     <div style="padding: 20px" class="form-group">
-                        <label>Название блока:</label>
+                        <label>Новое название:</label>
                         <input style="width: 100%" type="text" class="form-control" name="edit_block_name" required >
                     </div>
                     <div style="padding: 20px" class="form-group">
-                        <label>Описание блока:</label>
+                        <label>Новое описание:</label>
                         <textarea class="form-control" name="edit_block_desc" required rows="3"></textarea>
                     </div>
                     <div style="padding: 20px" class="form-group">
                         <input type="hidden" name="edit_parent_id" value="">
                     </div>
                     <div class="form-group">
-                        <div id="append_manager_error" class="alert-box success">
+                        <div id="append_manager_edit_error" class="alert-box success">
                             <h2 style="text-align: center"></h2>
                         </div>
                     </div>
                     <div style="padding: 20px" class="form-group">
-                        <input id="f-edit-script" style="background-color: rgba(11, 160, 9, 0.6);color: white;border: 1px solid gainsboro;padding: 8px"  type="submit" value="ДОБАВИТЬ">
+                        <input id="f-edit-script" style="background-color: rgba(11, 160, 9, 0.6);color: white;border: 1px solid gainsboro;padding: 8px"  type="button" value="ДОБАВИТЬ">
                         <button type="button" style="background-color: rgba(0, 75, 160, 0.6);color: white;float: right;border: 1px solid gainsboro;padding: 8px" data-dismiss="modal">ОТМЕНА</button>
                     </div>
                     {!! csrf_field() !!}

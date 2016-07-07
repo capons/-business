@@ -30,9 +30,8 @@ class AuthController extends Controller
     */
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-    //protected $redirectTo = 'user/index'; //было сначало
     protected $redirectTo = '/'; //redirect path after sign in
-    private $last_id = '';  //put into variable last insert id
+    //private $last_id = '';  //put into variable last insert id
     private $hash = ''; //put into variable user hash to confirm user account
     private $login_err_m = ''; //login error message
     /**
@@ -53,18 +52,17 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         $messages = [ //validation message
-            'name.required' => 'Name is required',
-            'name.max:255' => 'Name is required',
-            'email.max:255' => 'Email is required',
-            'email.required' => 'Email is required',
-            'pass.required' => 'Password is required',
-            're_pass.required' => 'Re_Password is reuired',
-            're_pass.same:pass' => 'Re_Password should be the same as password'
+            'name.required' => 'Введите имя!',
+            'email.required' => 'Введите email или логин!',
+            'email.unique' => 'Email уже занят!',
+            'pass.required' => 'Введите пароль!',
+            're_pass.required' => 'Введите пароль повторно!',
+            're_pass.same' => 'Подтверждение пароля не верно!'
         ];
         return Validator::make($data, [   //validation registration form
             'name' => 'required|max:50',
             'email' => 'required|email|max:50|unique:users',
-            'pass' => 'required|min:6|max:50',
+            'pass' => 'required|min:3|max:50',
             're_pass' => 'required|same:pass',
         ],$messages);
     }
@@ -118,7 +116,7 @@ class AuthController extends Controller
                         //   return $this->handleUserWasAuthenticated($request, $throttles);
                         //}
                     } else {
-                        $this->login_err_m = 'У вас нет прав!';
+                        $this->login_err_m = Lang::get('error.auth.no_access');
                     }
                 } else {
                     $this->login_err_m = Lang::get('error.auth.no_active');
@@ -127,10 +125,10 @@ class AuthController extends Controller
 
                 if(Auth::attempt($userdata_name + ['active' => 1])) { //check if user active account
                     if(Auth::user()->access == 1) {
-                        Session::flash('user-info', 'Вы успешно вошли!'); //send message to user via flash data
+                        Session::flash('user-info', Lang::get('message.auth.access_login')); //send message to user via flash data
                         return redirect('manager/account');
                     } else {
-                        $this->login_err_m = 'У вас нет прав!';
+                        $this->login_err_m = Lang::get('error.auth.no_access');
                     }
                     /*
                     if (Session::has('user_auth_mess')) { //if session isset redirect if no push data to session
@@ -141,7 +139,7 @@ class AuthController extends Controller
                     }
                     */
                 } else {
-                    $this->login_err_m = 'Аккаунт не активирован!';
+                    $this->login_err_m = Lang::get('error.auth.no_active');
                 }
             
             } else {
@@ -161,6 +159,9 @@ class AuthController extends Controller
                 $this->loginUsername() => $this->login_err_m,//$this->getFailedLoginMessage(), //message active account error
             ]);
     }
+
+
+    //now method disable ! Method need if we need second form to authorization by manager!
     public function postLoginManager(Request $request){ //login by manager (if need to do another login page for manager)
         if ($request->isMethod('post')) {
             // If the class is using the ThrottlesLogins trait, we can automatically throttle
@@ -259,7 +260,7 @@ class AuthController extends Controller
         $headers  = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=utf8' . "\r\n";
         $headers .= 'От '.env('admin_email'). "\r\n";
-        mail($user->email, 'Ссылка для активации аккаунта', 'Спасибо за регистрацию в нашем сервисе, пройдите по ссылке чтобы подтвердить свой email '.$link_to_active, $headers);
+        mail($user->email, 'Ссылка для активации аккаунта', 'Спасибо за регистрацию в нашем сервисе, пройдите по ссылке чтобы подтвердить свой email '."\r\n".$link_to_active, $headers);
 
         Session::flash('user-info',Lang::get('message.reg_confirm') ); //send message to user via flash data
         return redirect('/');
@@ -313,7 +314,7 @@ class AuthController extends Controller
             'hash' => $this->hash
             //'active' => 1 //set user to active (need to be confirm on email address in future)
         ]);
-        $this->last_id = $save_data->id;    //put user id into variable
+       // $this->last_id = $save_data->id;    //put user id into variable
         return $save_data;
     }
 }

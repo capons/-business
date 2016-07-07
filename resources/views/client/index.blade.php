@@ -7,21 +7,21 @@
 
 @section('content')
     <p style="text-align: center">Аккаунт клиента</p>
-@if (count($user) > 0)
+    @if (count($user) > 0)
 
 
-    <div class="col-lg-12">
-        <div class="col-xs-offset-6 col-xs-6">
-            <div class="col-xs-6">
-                <p>Вы вошли как <span style="font-family: Aparajita">{{$user->name}}</span>
-                </p>
-            </div>
-            <div class="col-xs-6">
-                <a style="padding: 5px;background-color: #ff9e97;color: black" href="{{ url('auth/logout')}}">Выход</a>
+        <div class="col-lg-12">
+            <div class="col-xs-offset-6 col-xs-6">
+                <div class="col-xs-6">
+                    <p>Вы вошли как <span style="font-family: Aparajita">{{$user->name}}</span>
+                    </p>
+                </div>
+                <div class="col-xs-6">
+                    <a style="padding: 5px;background-color: #ff9e97;color: black" href="{{ url('auth/logout')}}">Выход</a>
+                </div>
             </div>
         </div>
-    </div>
-@endif
+    @endif
 
     <div class="col-lg-12">
         <div class="col-lg-12">
