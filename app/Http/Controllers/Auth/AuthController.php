@@ -31,7 +31,7 @@ class AuthController extends Controller
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
     protected $redirectTo = '/'; //redirect path after sign in
-    //private $last_id = '';  //put into variable last insert id
+    private $last_id = '';  //put into variable last insert id
     private $hash = ''; //put into variable user hash to confirm user account
     private $login_err_m = ''; //login error message
     /**
@@ -314,7 +314,7 @@ class AuthController extends Controller
             'hash' => $this->hash
             //'active' => 1 //set user to active (need to be confirm on email address in future)
         ]);
-       // $this->last_id = $save_data->id;    //put user id into variable
+        $this->last_id = $save_data->id;    //put user id into variable -> use in account activatio
         return $save_data;
     }
 }

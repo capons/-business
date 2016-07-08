@@ -25,4 +25,23 @@ ul.dropdown li .child{
     float: right;
     padding: 10px;
 }
+div.dropdown div .child{
+    display: none;
+}
+.block_title_c {
+    background-color: white;
+    margin-bottom: 15px;
+}
+.block_desc {
+    background-color: white;
+}
+.block_body_c {
+    background-color: #b4b9c0;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.b-s-b {
+    padding: 10px;
+    cursor: pointer;
+}
 /* ./manager account*/

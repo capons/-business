@@ -104,9 +104,9 @@ var client = (function () {                    //Client controller group
                                 setTimeout(function(){
                                     $('#add-manager-m').modal('hide');
                                     $('#append_manager_error > h2').html('');
-                                    $('#f-add-script').removeAttr('disabled');
                                     window.location.href = "./script";
                                 },2000);
+                               // $('#f-add-script').removeAttr('disabled');
                                 break;
                             case false:        //if return form validation error
                                 //console.log(data.message);
@@ -148,7 +148,7 @@ var client = (function () {                    //Client controller group
                                 $('#append_manager_edit_error > h2').html(data.message);
                                 setTimeout(function () {
                                     $('#add-manager-m').modal('hide');
-                                    $('#f-edit-script').removeAttr('disabled');
+                                   // $('#f-edit-script').removeAttr('disabled');
                                     window.location.href = "./script";
                                 }, 2000);
                                 //$('#append_manager_edit_error > h2').html('');

@@ -29,7 +29,7 @@ class ManagerController extends Controller
             ->select('scripts.id','scripts.parent_id','scripts.name','scripts.desc')
             ->where ('users.id', '=' , Auth::user()->id)
             ->get();
-        /*
+
         $manager_task = json_decode(json_encode($manager_task), true); //object convert to array
 
         //builde category tree
@@ -42,9 +42,9 @@ class ManagerController extends Controller
         }
 
         $manager_task_tree =  $this->build_tree($cat, 0); //SEND category tree to view
-        */
+
         
-        return view ('manager.index',['manager_task' => $manager_task/*$manager_task_tree*/,'manager' => $manager]);
+        return view ('manager.index',['manager_task' => /*$manager_task*/$manager_task_tree,'manager' => $manager]);
     }
 
     /**
@@ -54,6 +54,7 @@ class ManagerController extends Controller
      * @return null|string
      */
     private function build_tree($cat, $parent_id, $only_parent = false){ //create block tree and return build tree
+        /*
         $tree = '<div class="child">';
         if (is_array($cat) and isset($cat[$parent_id])) {
             $tree .= '<ul style="list-style: none" class="dropdown">';
@@ -74,6 +75,29 @@ class ManagerController extends Controller
                 $tree .= '</li>';
             }
             $tree .= '</ul>';
+        } else return null;
+        $tree .= '</div>';
+        */
+        $tree = '<div style="padding: 0px" class="col-xs-12 child">';
+        if (is_array($cat) and isset($cat[$parent_id])) {
+            $tree .= '<div class="dropdown">';
+            if ($only_parent == false) {
+                foreach ($cat[$parent_id] as $cat_row) {
+                    if(mb_strlen($cat_row['desc']) > 15) { //if description > 15 character in length
+                        $tree .= '<div id="' . $cat_row['id'] . '"><div  class="col-xs-12 block_body_c"><div class="col-xs-12 block_title_c">' . $cat_row['name'] . '</div> <div><span id="m-desc-res-'.$cat_row['id'].'" class="glyphicon glyphicon-zoom-in b-s-b" data-m_desc="'.$cat_row['desc'].'" onclick="show_script_m('.$cat_row['id'].')"></span><a class="manager_home" href="'.App::make('url')->to('/').'/manager/account'.'">на главную</a></div></div>';  //li -> will have a id as category id in database
+                    } else {                               //if description < 15 character in length
+                        $tree .= '<div id="' . $cat_row['id'] . '"><div  class="col-xs-12 block_body_c"><div class="col-xs-12 block_title_c">' . $cat_row['name'] . '</div> <div><span id="m-desc-res-'.$cat_row['id'].'" class="glyphicon glyphicon-zoom-in b-s-b" data-m_desc="'.$cat_row['desc'].'" onclick="show_script_m('.$cat_row['id'].')"></span><a class="manager_home" href="'.App::make('url')->to('/').'/manager/account'.'">на главную</a></div></div>';  //li -> will have a id as category id in database
+                    }
+                    $tree .= $this->build_tree($cat, $cat_row['id']);
+                    $tree .= '</div>';
+                }
+            } elseif (is_numeric($only_parent)) {
+                $category = $cat[$parent_id][$only_parent];
+                $tree .= '<div>' . $category['name'];
+                $tree .= $this->build_tree($cat, $category['id']);
+                $tree .= '</div>';
+            }
+            $tree .= '</div>';
         } else return null;
         $tree .= '</div>';
 

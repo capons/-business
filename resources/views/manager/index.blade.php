@@ -31,25 +31,12 @@
             <p style="word-break: keep-all;" id="display-manager-task-desk"></p>
         </div>
         <div class="col-xs-12">
-            <div style="float: none;margin: 0 auto" class="col-xs-6">
+            <div style="float: none;margin: 0 auto;display: table" class="col-xs-6">
                 @if(count($manager_task) > 0)
                     <?php
-                   // echo $manager_task;
+                    echo $manager_task;
                     ?>
-                    @foreach($manager_task as $row)
-                            <div style="background-color: #00a0d2;margin-bottom: 20px" class="col-xs-12">
-                                <div class="col-xs-4">
-                                    <span id="m-desc-res-{{$row->id}}" class="glyphicon glyphicon-zoom-in b-s-b" data-m_desc="{{$row->desc}}" onclick="show_script_m('{{$row->id}}')"></span>
-                                </div>
-                                <div class="col-xs-4">
-                                    <p style="padding: 10px;margin: 0px">{{$row->name}}</p>
-                                </div>
-                                <div class="col-xs-4">
-                                    <a class="manager_home" href="<?php echo App::make('url')->to('/').'/manager/account';?>">на главную</a>
-                                </div>
 
-                            </div>
-                    @endforeach
                 @endif
             </div>
         </div>
