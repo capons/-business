@@ -40,4 +40,5 @@ Route::group(['middleware' => ['admin']], function() { //group for admin
 //manager route group
 Route::group(['middleware' => ['auth']], function() { //group for manager
     Route::get('manager/account', 'Manager\ManagerController@index'); // manager default view
+    Route::get('manager/account/{id}', 'Manager\ManagerController@show'); // manager default view
 });

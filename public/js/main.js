@@ -207,17 +207,7 @@ var manager = (function () {
     };
     return new doConstruct;
 })();
-function show_script_m(id){
-    var block_desc = $('#m-desc-res-'+id).attr("data-m_desc"); //block description
 
-    $('#display-manager-task-desk').html(block_desc);         //add block description
-    var selector = $('#'+id+">.child");
-    if(selector.css('display') == 'block'){                  //show and hide child block
-        selector.css('display','none');
-    } else {
-        selector.css('display','block');
-    }
-}
 
 // ./Manager route group
 

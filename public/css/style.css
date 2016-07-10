@@ -22,7 +22,6 @@ ul.dropdown li .child{
 
 /* manager account*/
 .manager_home {
-    float: right;
     padding: 10px;
 }
 div.dropdown div .child{
@@ -39,6 +38,7 @@ div.dropdown div .child{
     background-color: #b4b9c0;
     padding: 15px;
     margin-bottom: 15px;
+    text-align: center;
 }
 .b-s-b {
     padding: 10px;

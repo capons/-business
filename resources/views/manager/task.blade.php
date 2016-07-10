@@ -26,19 +26,25 @@
             </div>
         @endif
 
-        <!--
+
         <div style="min-height: 300px;background-color: rgba(202, 233, 211, 0.6)" class="col-xs-12">
-            <p style="word-break: keep-all;" id="display-manager-task-desk"></p>
+            @if(count($manager_task) > 0)
+                <p style="word-break: keep-all;text-align: center">
+                    {{$manager_task->desc}}
+                </p>
+            @endif
         </div>
-        -->
         <div class="col-xs-12">
             <div style="float: none;margin: 0 auto;display: table" class="col-xs-6">
-                @if(count($manager_task) > 0)
-                    <?php
-                    echo $manager_task;
-                    ?>
-
+                @if(count($parent_script))
+                    @foreach($parent_script as $row)
+                        <div  class="col-xs-12 block_body_c"><a href="<?php echo  App::make('url')->to('/').'/manager/account/';?>{{$row->id}}">{{$row->name}}</a>
+                        </div>
+                    @endforeach
                 @endif
+                    <div style="text-align: center" class="col-xs-12">
+                        <a class="manager_home" href="<?php echo App::make('url')->to('/').'/manager/account'; ?>">на главную</a>
+                    </div>
             </div>
         </div>
 
